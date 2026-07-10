@@ -1,0 +1,475 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story - LUXEDIYU</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'DM Sans', sans-serif; background: #fff; color: #1a1a1a; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        
+        :root {
+            --primary: #d4af37;
+            --primary-dark: #a68520;
+            --black: #1a1a1a;
+            --gray: #666;
+            --light-gray: #f8f8f8;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            background: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* HEADER - STICKY ON TOP */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            z-index: 10000;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--black);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: 0.3s;
+        }
+        
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 20px;
+            font-size: 18px;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--black);
+        }
+        
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100vh;
+            background: #fff;
+            z-index: 10001;
+            padding: 20px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        .mobile-nav.active {
+            left: 0;
+        }
+        
+        .mobile-nav-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .mobile-nav-links a {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 10000;
+        }
+        
+        .mobile-nav-overlay.active {
+            display: block;
+        }
+        
+        /* Hero Section */
+        .about-hero {
+            background: linear-gradient(135deg, #faf9f6 0%, #f0ede8 100%);
+            padding: 80px 20px;
+            text-align: center;
+        }
+        
+        .about-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        
+        .about-hero p {
+            font-size: 18px;
+            color: var(--gray);
+        }
+        
+        /* Story Section */
+        .story-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .story-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .story-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .story-text p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--gray);
+            margin-bottom: 18px;
+        }
+        
+        .story-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 15px 15px 0 var(--primary);
+        }
+        
+        /* Craft Section */
+        .craft-section {
+            background: var(--light-gray);
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .craft-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+        
+        .craft-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .craft-card {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        
+        .craft-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .craft-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        
+        .craft-icon i {
+            font-size: 24px;
+            color: #fff;
+        }
+        
+        .craft-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        
+        .craft-card p {
+            color: var(--gray);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        /* Values Section */
+        .values-section {
+            background: var(--black);
+            padding: 60px 20px;
+            text-align: center;
+            color: #fff;
+        }
+        
+        .values-grid {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+        
+        .value-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .value-label {
+            font-size: 16px;
+            margin-top: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: #fff;
+            padding: 50px 20px 25px;
+            text-align: center;
+        }
+        
+        footer .logo {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #999;
+            font-size: 14px;
+        }
+        
+        footer p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Responsive - Tablet */
+        @media (max-width: 900px) {
+            .story-grid, .craft-grid { grid-template-columns: 1fr; }
+        }
+        
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+            .nav-links, .nav-icons { display: none; }
+            .mobile-menu-btn { display: block; }
+            .mobile-nav { display: block; }
+            .about-hero h1 { font-size: 36px; }
+            .values-grid { gap: 40px; }
+            .value-number { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+    ✨ Free Shipping Across India | Easy Returns | Secure Payments
+</div>
+
+<!-- HEADER - STICKY ON TOP -->
+<header>
+    <div class="logo"><a href="{% url 'home' %}">LUXEDIYU</a></div>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'shop' %}">Collections</a></li>
+            <li><a href="{% url 'about' %}" class="active">Our Story</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="nav-icons">
+        <a href="{% url 'cart' %}"><i class="fas fa-shopping-bag"></i></a>
+    </div>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+</header>
+
+<!-- Mobile Navigation Overlay -->
+<div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+
+<!-- Mobile Navigation -->
+<div class="mobile-nav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+        <i class="fas fa-times"></i>
+    </button>
+    <div class="mobile-nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'shop' %}">Collections</a>
+        <a href="{% url 'about' %}">Our Story</a>
+        <a href="{% url 'contact' %}">Contact</a>
+    </div>
+</div>
+
+<!-- Hero Section -->
+<div class="about-hero">
+    <div>
+        <h1>OUR STORY</h1>
+        <p>Crafting elegance since 2015. Where tradition meets modernity.</p>
+    </div>
+</div>
+
+<!-- Brand Story -->
+<div class="story-section">
+    <div class="story-grid">
+        <div class="story-text">
+            <h2>The Beginning</h2>
+            <p><strong>LUXEDIYU</strong> was born from love, memories, and the timeless elegance of a remarkable woman—our grandmother.</p>
+            <p>Growing up, founder <strong>Preeti</strong> was inspired by her grandmother's grace, strength, and the way she cherished every piece of jewelry she owned. To her, jewelry was never just an accessory; it was a symbol of love, family, tradition, and the stories that connect generations.</p>
+            <p>Every necklace, bracelet, and pendant carried a memory. Every piece had a meaning. Watching her grandmother treasure these moments inspired Preeti to create a brand that celebrates the same emotions and connections.</p>
+            <p>At LUXEDIYU, we believe jewelry should be more than something you wear—it should be something you feel.</p>
+        </div>
+        <div class="story-image">
+            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600" alt="LUXEDIYU Workshop">
+        </div>
+    </div>
+</div>
+
+<!-- Craftsmanship -->
+<div class="craft-section">
+    <div class="craft-container">
+        <p class="section-subtitle">The Art of Making</p>
+        <h2 class="craft-title">Our Craftsmanship</h2>
+        
+        <div class="craft-grid">
+            <div class="craft-card">
+                <div class="craft-icon"><i class="fas fa-gem"></i></div>
+                <h3>Handcrafted Excellence</h3>
+                <p>Each piece is meticulously crafted by master artisans with over 20 years of experience.</p>
+            </div>
+            <div class="craft-card">
+                <div class="craft-icon"><i class="fas fa-award"></i></div>
+                <h3>Premium Materials</h3>
+                <p>We source only the finest gold and ethically sourced materials from trusted suppliers.</p>
+            </div>
+            <div class="craft-card">
+                <div class="craft-icon"><i class="fas fa-certificate"></i></div>
+                <h3>Quality Assured</h3>
+                <p>Every jewelry piece undergoes a rigorous 6-step quality check process.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Values / Stats -->
+<div class="values-section">
+    <div class="values-grid">
+        <div class="value-item">
+            <div class="value-number">50+</div>
+            <div class="value-label">Master Artisans</div>
+        </div>
+        <div class="value-item">
+            <div class="value-number">10K+</div>
+            <div class="value-label">Happy Customers</div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="logo">LUXEDIYU</div>
+    <div class="footer-links">
+        <a href="{% url 'shop' %}">Shop</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="#">Privacy Policy</a>
+    </div>
+    <p>&copy; 2026 LUXEDIYU. All Rights Reserved.</p>
+</footer>
+
+<script>
+function toggleMobileMenu() {
+    document.querySelector('.mobile-nav').classList.toggle('active');
+    document.querySelector('.mobile-nav-overlay').classList.toggle('active');
+}
+</script>
+
+</body>
+</html>

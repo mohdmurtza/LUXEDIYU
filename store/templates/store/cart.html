@@ -1,0 +1,453 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Lumière</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #fff; margin: 0; }
+        
+       header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 20px;
+    border-bottom:1px solid #eee;
+}
+        .logo { font-size: 1.5rem; font-family: 'Playfair Display', serif; font-weight: 700; }
+        .nav-links { display: flex; gap: 30px; font-weight: 900; list-style: none; margin: 0; padding: 0; }
+        .nav-links a { font-size: 0.9rem; text-transform: uppercase; text-decoration: none; color: #333; }
+        
+        .cart-page { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        
+        .cart-items-section h2 { font-size: 1.5rem; margin-bottom: 20px; color: #282c3f; }
+        
+        .cart-item { display: flex; gap: 20px; padding: 20px 0; border-bottom: 1px solid #eaeaea; position: relative; }
+        .cart-item img { width: 150px; height: 150px; object-fit: cover; border: 1px solid #f5f5f5; }
+        .item-details { flex: 1; }
+        .item-title { font-size: 1rem; font-weight: 700; margin-bottom: 5px; color: #282c3f; }
+        .item-seller { font-size: 0.85rem; color: #949494; margin-bottom: 10px; }
+        .item-price { font-size: 1.1rem; font-weight: 700; color: #282c3f; margin-bottom: 10px; }
+        
+        .delivery-estimate { font-size: 0.85rem; color: #949494; margin-bottom: 15px; }
+        
+        .qty-selector { display: inline-flex; border: 1px solid #ccc; border-radius: 2px; margin-bottom: 15px; }
+        .qty-btn { width: 28px; height: 28px; background: #f5f5f5; border: none; cursor: pointer; font-size: 1rem; }
+        .qty-btn:hover { background: #e5e5e5; }
+        .qty-input { width: 40px; text-align: center; border: none; border-left: 1px solid #ccc; border-right: 1px solid #ccc; }
+        
+        .item-actions { display: flex; gap: 20px; font-size: 0.9rem; }
+        .item-actions span { cursor: pointer; color: #535766; }
+        .item-actions span:hover { color: #ff3f6a; }
+        
+        .remove-btn { position: absolute; top: 20px; right: 0; background: none; border: none; font-size: 1.2rem; color: #949494; cursor: pointer; }
+        
+        .order-summary { background: #fff; border: 1px solid #eaeaea; padding: 20px; height: fit-content; }
+        .summary-header { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #eaeaea; padding-bottom: 10px; }
+        .top-bar{
+    background:#E91E63;
+    color:white;
+    text-align:center;
+    padding:10px;
+    font-size:13px;
+    letter-spacing:.5px;
+}
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .price-row-label { color: #555; }
+        .price-row-value { font-weight: 700; }
+        .price-row-value.free { color: #007600; }
+        .price-row-value.included { color: #007600; font-size: 0.8rem; }
+        
+        .price-row.final { border-top: 1px solid #eaeaea; padding-top: 15px; margin-top: 15px; font-size: 1.1rem; font-weight: 700; }
+        
+        .checkout-btn { width: 100%; background: #ff3f6a; color: #fff; border: none; padding: 15px; font-size: 1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; margin-top: 20px; }
+        .checkout-btn:hover { background: #e03560; }
+        
+        .empty-cart { text-align: center; padding: 60px 0; }
+        .empty-cart i { font-size: 4rem; color: #e5e5e5; margin-bottom: 20px; }
+        .empty-cart h3 { margin-bottom: 10px; }
+        .continue-shopping { display: inline-block; background: #ff3f6a; color: #fff; padding: 12px 25px; text-decoration: none; margin-top: 20px; }
+        .nav-icons{
+    display:flex;
+    gap:15px;
+    align-items:center;
+}
+@media (max-width:900px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .nav-icons{
+        display:none;
+    }
+
+    .mobile-menu-btn{
+        display:block !important;
+        font-size:24px;
+        border:none;
+        background:none;
+        cursor:pointer;
+        color:#333;
+    }
+
+    .logo{
+        font-size:28px;
+    }
+}
+@media (max-width: 900px){
+
+    .cart-page{
+        display:block;
+        padding:0 15px;
+    }
+
+    .order-summary{
+        margin-top:20px;
+        width:100%;
+    }
+
+    .cart-item{
+        flex-direction:row;
+        gap:12px;
+    }
+
+    .cart-item img{
+        width:110px;
+        height:110px;
+        flex-shrink:0;
+    }
+
+    .item-title{
+        font-size:16px;
+        line-height:1.3;
+    }
+}
+        .mobile-menu-btn{
+    display:none;
+    background:none;
+    border:none;
+    font-size:24px;
+    cursor:pointer;
+}
+
+.mobile-nav{
+    position:fixed;
+    top:0;
+    left:-300px;
+    overflow-y:auto;
+    width:250px;
+    height:100vh;
+    background:#fff;
+    z-index:10001;
+    padding:20px;
+    transition:.3s;
+    box-shadow:0 0 20px rgba(0,0,0,.3);
+}
+
+.mobile-nav.active{
+    left:0;
+}
+
+.mobile-nav-close{
+    background:none;
+    border:none;
+    font-size:24px;
+    margin-bottom:20px;
+    cursor:pointer;
+}
+
+.mobile-nav-links{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.mobile-nav-links a{
+    padding:12px 0;
+    font-weight:600;
+    border-bottom:1px solid #eee;
+    text-decoration:none;
+    color:#333;
+}
+
+.mobile-nav-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:10000;
+    opacity:0;
+    visibility:hidden;
+    transition:.3s;
+}
+
+.mobile-nav-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    ✨ Free Shipping Across India | Easy Returns | Secure Payments
+</div>
+    <!-- Header -->
+    <header>
+    <div class="logo">
+        <a href="{% url 'home' %}" style="text-decoration:none;color:inherit;">
+            LUXEDIYU
+        </a>
+    </div>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'shop' %}">Collections</a></li>
+            <li><a href="{% url 'about' %}">Our Story</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="nav-icons">
+        <i class="fas fa-search"></i>
+        <i class="fas fa-heart"></i>
+
+        <a href="{% url 'cart' %}">
+            <i class="fas fa-shopping-bag"></i>
+        </a>
+    </div>
+
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+</header>
+
+<div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+
+<div class="mobile-nav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <div class="mobile-nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'shop' %}">Collections</a>
+        <a href="{% url 'about' %}">Our Story</a>
+        <a href="{% url 'contact' %}">Contact</a>
+        <a href="{% url 'cart' %}">Cart</a>
+    </div>
+</div>
+    <!-- Cart Page -->
+    <div class="cart-page">
+        
+        <!-- Left: Cart Items -->
+        <div class="cart-items-section">
+            <h2>Shopping Bag (<span id="itemCount">0</span> items)</h2>
+            <div id="cartItemsContainer">
+                <!-- Items loaded from localStorage -->
+            </div>
+            
+            <!-- Empty Cart -->
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <i class="fas fa-shopping-bag"></i>
+                <h3>Your bag is empty</h3>
+                <p>Looks like you haven't added anything yet.</p>
+                <a href="{% url 'shop' %}" class="continue-shopping">Continue Shopping</a>
+            </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="order-summary">
+            <div class="summary-header">Price Details</div>
+            
+            <div class="price-details">
+                <div class="price-row">
+                    <span class="price-row-label">Product Price</span>
+                    <span class="price-row-value" id="bagTotal">₹0</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-row-label">Shipping</span>
+                    <span class="price-row-value free" id="deliveryCharge">FREE</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-row-label">Tax (3%)</span>
+                    <span class="price-row-value included">Included</span>
+                </div>
+                <div class="price-row final">
+                    <span class="price-row-label">Total Price</span>
+                    <span class="price-row-value" id="finalTotal">₹0</span>
+                </div>
+            </div>
+
+            <button class="checkout-btn" onclick="checkout()">Checkout Now</button>
+            
+            <div style="margin-top: 15px; text-align: center; font-size: 0.8rem; color: #535766;">
+                <i class="fas fa-shield-alt"></i> Safe and Secure Payments
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+  <!-- Add this JavaScript at the bottom of cart.html, before </body> -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // First save localStorage cart to Django session
+    let cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+    
+    if (cart.length > 0) {
+        fetch('{% url "add_to_cart" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(cart)
+        }).then(() => {
+            loadCart();
+        });
+    } else {
+        loadCart();
+    }
+});
+
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+    
+    const container = document.getElementById('cartItemsContainer');
+    const emptyCart = document.getElementById('emptyCart');
+    const itemCount = document.getElementById('itemCount');
+    
+    itemCount.textContent = cart.length;
+    
+    if (cart.length === 0) {
+        container.innerHTML = '';
+        emptyCart.style.display = 'block';
+        document.getElementById('bagTotal').textContent = '₹0';
+        document.getElementById('finalTotal').textContent = '₹0';
+        return;
+    }
+    
+    emptyCart.style.display = 'none';
+    
+    container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+            <button class="remove-btn" onclick="removeItem(${index})"><i class="fas fa-times"></i></button>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+                <div class="item-title">${item.name}</div>
+                <div class="item-seller">Sold by: Lumière Official</div>
+                <div class="item-price">₹${item.price.toLocaleString('en-IN')}</div>
+                <div class="delivery-estimate">Free Delivery</div>
+                
+                <div class="qty-selector">
+                    <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                    <input type="text" value="${item.quantity}" class="qty-input" readonly>
+                    <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                </div>
+                
+                <div class="item-actions">
+                    <span onclick="removeItem(${index})"><i class="far fa-trash-alt"></i> REMOVE</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    // Calculate total
+    let bagTotal = 0;
+    cart.forEach(item => {
+        bagTotal += item.price * item.quantity;
+    });
+    
+    document.getElementById('bagTotal').textContent = '₹' + bagTotal.toLocaleString('en-IN');
+    document.getElementById('finalTotal').textContent = '₹' + bagTotal.toLocaleString('en-IN');
+    document.getElementById('itemCount').textContent = cart.length;
+}
+
+function updateQty(index, change) {
+    let cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+    
+    let newQty = cart[index].quantity + change;
+    
+    if (newQty < 1) {
+        if (confirm('Remove this item from cart?')) {
+            cart.splice(index, 1);
+        }
+    } else if (newQty > 10) {
+        alert('Maximum quantity allowed is 10');
+        return;
+    } else {
+        cart[index].quantity = newQty;
+    }
+    
+    localStorage.setItem('lumiere_cart', JSON.stringify(cart));
+    
+    // Save to Django session
+    fetch('{% url "add_to_cart" %}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify(cart)
+    });
+    
+    loadCart();
+}
+
+function removeItem(index) {
+    if (confirm('Are you sure you want to remove this item?')) {
+        let cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('lumiere_cart', JSON.stringify(cart));
+        
+        // Save to Django session
+        fetch('{% url "add_to_cart" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify(cart)
+        });
+        
+        loadCart();
+    }
+}
+
+
+function toggleMobileMenu() {
+    document.querySelector('.mobile-nav').classList.toggle('active');
+    document.querySelector('.mobile-nav-overlay').classList.toggle('active');
+}
+function checkout() {
+    let cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+    
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    
+    // Save order details
+    let bagTotal = 0;
+    cart.forEach(item => {
+        bagTotal += item.price * item.quantity;
+    });
+    
+    const orderDetails = {
+        items: cart,
+        bagTotal: bagTotal,
+        delivery: 0,
+        finalTotal: bagTotal
+    };
+    
+    localStorage.setItem('lumiere_order', JSON.stringify(orderDetails));
+    
+    window.location.href = '{% url "checkout" %}';
+}
+</script>
+</body>
+</html>

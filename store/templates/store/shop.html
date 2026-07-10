@@ -1,0 +1,603 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewelry Collection - LUXEDIYU</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* YOUR EXACT STYLES - WITH FIXES */
+        :root {
+            --primary: #d4af37;
+            --black: #1a1a1a;
+            --gray: #666;
+        }
+        body{
+            margin:0;
+    font-family:'DM Sans',sans-serif;
+  
+background:#fcfaf7;
+
+    color:#222;
+        }
+        .top-bar {
+            background: var(--primary);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        background-color: red;
+        font-size: 13px;
+        letter-spacing: .5px;
+        }
+
+        header {
+            display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 60px;
+background:white;
+box-shadow:0 5px 20px rgba(0,0,0,.05);
+border:none;
+        }
+
+        header .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        header nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        header nav ul li a {
+            color: #282c3f;
+    font-weight: 500;
+    font-size: 17px;
+    text-decoration: f;
+    text-decoration: none;
+    font-weight:600;
+letter-spacing:1px;
+text-transform:uppercase;
+    position: relative;
+        }
+
+        header nav ul li a:hover,
+        header nav ul li a.active {
+            color: var(--primary);
+        }
+
+        header nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        header nav ul li a:hover::after,
+        header nav ul li a.active::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 30px;
+            font-size: 18px;
+        }
+
+        /* YOUR EXACT FILTER STYLES */
+        .filter-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 8px 30px rgba(0,0,0,.05);
+        }
+
+        .filter-card {
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: #282c3f;
+        }
+
+        .filter-options {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #333;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .filter-label:hover {
+            color: var(--primary);
+        }
+
+        .filter-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .filter-count {
+            margin-left: auto;
+            color: #949494;
+            font-size: 0.8rem;
+        }
+
+        /* Color Filter - YOUR EXACT STYLE */
+        .color-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        .color-swatch.selected {
+            box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--primary);
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-box{
+border-radius:18px;
+background:white;
+overflow:hidden;
+transition:.4s;
+box-shadow:0 5px 18px rgba(0,0,0,.04);
+}
+
+        .product-box:hover {
+            transform:translateY(-12px);
+box-shadow:0 20px 45px rgba(0,0,0,.12);
+transform:scale(1.05);
+
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-box img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+            transition:.4s;
+            background: #f5f5f5;
+        }
+a:-webkit-any-link{
+    text-decoration: none;
+    color: black;
+}
+        /* Mobile Navigation */
+        .mobile-menu-btn { display: none; }
+        .mobile-nav { display: none; }
+        .mobile-nav-overlay { display: none; }
+        
+        /* Mobile Filter */
+        .mobile-filter-btn { display: none; }
+        .close-filter { display: none; }
+        .overlay { display: none; }
+
+        .collection-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0;
+    padding: 0 10px; /* ya 0 agar bilkul edge tak chahiye */
+    display: flex;
+    gap: 30px;
+}
+
+.collection-main {
+    flex: 1;
+    min-width: 0;
+}
+.filter-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    background:#fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 8px 30px rgba(0,0,0,.05);
+}
+.filter-label{
+padding:12px 15px;
+border-radius:10px;
+transition:.3s;
+}
+
+.filter-label:hover{
+background:#f9f5ed;
+padding-left:22px;
+}
+.product-detail{
+padding:18px;
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.product-detail h3{
+font-size:18px;
+margin:8px 0;
+}
+
+.product-detail .brand{
+font-size:12px;
+color:#999;
+letter-spacing:1px;
+text-transform:uppercase;
+}
+
+.product-detail .price{
+font-size:24px;
+font-weight:700;
+color:#000;
+}
+
+.product-detail del{
+font-size:14px;
+color:#999;
+margin-left:8px;
+}
+.product-badge{
+position:absolute;
+top:15px;
+left:15px;
+background:#d4af37;
+color:#fff;
+padding:6px 12px;
+font-size:11px;
+border-radius:30px;
+font-weight:600;
+}
+.wishlist{
+position:absolute;
+top:15px;
+right:15px;
+width:38px;
+height:38px;
+background:#fff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+.sort-bar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#fafafa;
+padding:15px 20px;
+border-radius:15px;
+margin-bottom:30px;
+}
+.pagination a{
+padding:12px 24px;
+border-radius:30px;
+transition:.3s;
+font-weight:600;
+}
+
+.pagination a:hover{
+background:#000;
+color:#fff;
+}
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 850px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            header { padding-left: 10px;
+    padding-right: 10px; }
+            header nav ul { gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; background: none; border: none; font-size: 22px; cursor: pointer; }
+            
+            .mobile-nav {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 250px;
+                height: 100vh;
+                background: #fff;
+                z-index: 10001;
+                padding: 20px;
+                transition: 0.3s;
+                box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            }
+            
+            .mobile-nav.active { left: 0;         font-weight:600;
+letter-spacing:1px;
+text-transform:uppercase;           }
+            
+            .mobile-nav-close {
+                background: none;
+                border: none;
+                font-size: 24px;
+                margin-bottom: 20px;
+                cursor: pointer;
+            }
+            
+            .mobile-nav-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 10000;
+                opacity: 0;
+                visibility: hidden;
+            }
+            
+            .mobile-nav-overlay.active { opacity: 1; visibility: visible; }
+            
+            header nav ul { display: none; }
+            
+            /* Mobile Filter - YOUR EXACT STRUCTURE */
+            .mobile-filter-btn {
+                display: block;
+                width: calc(100% - 20px);
+                margin: 10px auto 15px;
+                padding: 12px 20px;
+                background: var(--primary);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                font-size: 15px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            .collection-container { display: block; max-width:1450px;
+margin:auto;
+ }
+
+            .filter-sidebar {
+                position: fixed;
+                top: 0;
+                left: -300px;
+                width: 250px;
+                max-width: 85%;
+                height: 100vh;
+                background: #fff;
+padding:25px;
+border-radius:18px;
+box-shadow:0 8px 30px rgba(0,0,0,.05);
+                z-index: 100000;
+                overflow-y: auto;
+                padding: 20px;
+                transition: left 0.3s ease;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            }
+
+            .filter-sidebar.active { left: 0; }
+
+            .close-filter {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 24px;
+                margin-bottom: 20px;
+                cursor: pointer;
+                color: #333;
+            }
+
+            .overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 99999;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .overlay.active { opacity: 1; visibility: visible; }
+
+            .collection-main { width: 100%; }
+
+            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .product-box img { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    ✨ Free Shipping Across India | Easy Returns | Secure Payments
+</div>
+
+<header>
+    <div class="logo">LUXEDIYU</div>
+    <nav>
+        <ul class="nav-links" style="font-weight: 900;">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'shop' %}" style="color:var(--primary);">Collections</a></li>
+            <li><a href="{% url 'about' %}">Our Story</a></li>
+            <li><a href="{% url 'contact' %}">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="nav-icons">
+        <i class="fas fa-search"></i>
+        <a href="{% url 'cart' %}"><i class="fas fa-shopping-bag"></i></a>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+    </button>
+</header>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav-overlay" onclick="toggleMobileMenu()"></div>
+<div class="mobile-nav">
+    <button class="mobile-nav-close" onclick="toggleMobileMenu()">
+        <i class="fas fa-times"></i>
+    </button>
+    <div class="mobile-nav-links" style="display:flex;flex-direction:column;gap:18px;">
+        <h4>LUXEDIYU</h4>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'shop' %}">Collections</a>
+        <a href="{% url 'about' %}">Our Story</a>
+        <a href="{% url 'contact' %}">Contact</a>
+    </div>
+</div>
+
+<!-- Breadcrumb -->
+<div style="max-width: 1300px; margin: 20px auto 0; padding: 0 20px;">
+    <p style="font-size: 0.9rem; color: #949494;">
+        Home / Jewelry / <span style="color:#282c3f; font-weight:700;">
+        {% if current_category %}{{ current_category|capfirst }}{% else %}All Products{% endif %}
+        </span>
+    </p>
+</div>
+
+<!-- MOBILE BUTTON -->
+<button class="mobile-filter-btn" onclick="toggleFilterMenu()">
+    <i class="fas fa-sliders-h"></i> Product Categories
+</button>
+
+<!-- OVERLAY -->
+<div class="overlay" onclick="toggleFilterMenu()"></div>
+
+<div class="collection-container">
+    <!-- YOUR EXACT FILTER SIDEBAR -->
+    <div class="filter-sidebar">
+        <button class="close-filter" onclick="toggleFilterMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <!-- Category Filter - YOUR EXACT STRUCTURE -->
+        <div class="filter-options">
+            <a href="{% url 'shop' %}" class="filter-label" style="text-decoration:none;">
+                All Products
+            </a>
+            {% for category in categories %}
+            <a href="{% url 'category_products' category.slug %}"
+               class="filter-label"
+               style="text-decoration:none; color:inherit;">
+                {{ category.name }}
+                <span class="filter-count">
+                    ({{ category.products.count }})
+                </span>
+            </a>
+            {% endfor %}
+        </div>  
+
+        <!-- Price Filter - YOUR EXACT -->
+        
+        <!-- Color Filter - YOUR EXACT -->
+        
+    </div>
+   
+    <!-- Main Products Area -->
+    <div class="collection-main">
+        <div class="sort-bar">
+            <span style="font-size: 0.9rem; margin-right: 10px; color: #333;">Sort by:</span>
+            <select style="padding: 8px 35px 8px 10px; border: 1px solid #ccc; border-radius: 2px;">
+                <option>Recommended</option>
+            </select>
+        </div>
+
+        <div class="products-grid">
+            {% for product in products %}
+            <div class="product-box">
+                <a href="{% url 'product_detail' product.slug %}">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                </a>
+                <div class="product-detail">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #949494; text-transform: uppercase; margin-bottom: 5px;">{{ product.brand }}</div>
+                    <div style="font-size: 0.9rem; color: #282c3f; margin: 8px;">{{ product.name|truncatechars:35 }}</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: #282c3f;">₹{{ product.price|floatformat:0 }} <span style="font-size:0.95rem; color:#999; text-decoration:line-through;">
+            ₹{{ product.original_price|floatformat:0 }}
+        </span></div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+            
+        </div>
+        <div class="pagination" style="text-align:center; margin:40px 0;">
+
+    {% if products.has_previous %}
+        <a href="?page={{ products.previous_page_number }}"
+           style="padding:10px 20px;border:1px solid #d4af37;color:#d4af37;text-decoration:none;border-radius:5px;margin-right:10px;">
+            Previous
+        </a>
+    {% endif %}
+
+    <span style="margin:0 15px;">
+        Page {{ products.number }} of {{ products.paginator.num_pages }}
+    </span>
+
+    {% if products.has_next %}
+        <a href="?page={{ products.next_page_number }}"
+           style="padding:10px 20px;background:linear-gradient(90deg,#d4af37,#b8860b);padding:12px;font-size:14px;font-weight:500;color:white;text-decoration:none;border-radius:5px;">
+            Next →
+        </a>
+    {% endif %}
+
+</div>
+    </div>
+</div>
+
+<script>
+function toggleMobileMenu() {
+    document.querySelector('.mobile-nav').classList.toggle('active');
+    document.querySelector('.mobile-nav-overlay').classList.toggle('active');
+}
+
+function toggleFilterMenu() {
+    document.querySelector('.filter-sidebar').classList.toggle('active');
+    document.querySelector('.overlay').classList.toggle('active');
+}
+</script>
+
+</body>
+</html>

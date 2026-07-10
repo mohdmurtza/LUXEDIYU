@@ -1,0 +1,661 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - LUXEDIYU</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root{
+    --gold:#D4AF37;
+    --gold-dark:#B8952F;
+    --black:#111111;
+    --gray:#6B7280;
+    --light:#F8F8F8;
+    --white:#FFFFFF;
+    --border:#E5E7EB;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'DM Sans',sans-serif;
+    background:#fff;
+    color:var(--black);
+    line-height:1.6;
+}
+
+a{
+    text-decoration:none;
+    color:inherit;
+}
+
+/* HEADER */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 60px;
+}
+
+.logo{
+    font-family:'Playfair Display',serif;
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:2px;
+}
+
+.nav-links{
+    display:flex;
+    gap:35px;
+    list-style:none;
+}
+
+.nav-links a{
+    font-size:14px;
+    text-transform:uppercase;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--gold);
+}
+
+/* MAIN CONTAINER */
+
+.container{
+    max-width:1450px;
+    margin:auto;
+    padding:50px 30px;
+}
+
+/* PRODUCT GRID */
+
+.product-grid{
+    display:grid;
+    grid-template-columns:1.2fr 1fr 340px;
+    gap:45px;
+    align-items:start;
+}
+
+/* GALLERY */
+
+.product-gallery{
+    position:sticky;
+    top:110px;
+}
+
+.main-image-box {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 20px;
+    height: 650px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.main-image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.main-image-box:hover img {
+    transform: scale(1.05);
+}
+
+.thumbnail-list{
+    margin-top:20px;
+    display:flex;
+    gap:12px;
+    justify-content:center;
+}
+
+.thumb-item{
+    width:90px;
+    height:90px;
+    border-radius:14px;
+    overflow:hidden;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:.3s;
+}
+
+.thumb-item.active,
+.thumb-item:hover{
+    border-color:var(--gold);
+}
+
+.thumb-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* PRODUCT INFO */
+
+.product-info{
+    padding:0 15px;
+}
+
+.product-brand{
+    display:inline-block;
+    padding:7px 14px;
+    background:#f6f6f6;
+    border-radius:40px;
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+.product-title{
+    font-family:'Playfair Display',serif;
+    font-size:42px;
+    line-height:1.2;
+    margin-bottom:18px;
+}
+
+.rating-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:25px;
+}
+
+.rating-stars{
+    color:var(--gold);
+    font-size:20px;
+}
+
+.rating-count{
+    color:var(--gray);
+}
+
+/* PRICE */
+
+.price-section{
+    margin:25px 0;
+}
+
+.price-new{
+    font-size:48px;
+    font-weight:700;
+    color:var(--gold-dark);
+}
+
+.price-old{
+    font-size:24px;
+    color:#999;
+    margin-left:15px;
+    text-decoration:line-through;
+}
+
+.discount-badge{
+    background:#e8f7eb;
+    color:#28a745;
+    padding:6px 12px;
+    border-radius:30px;
+    font-size:13px;
+    margin-left:10px;
+}
+
+/* DESCRIPTION */
+
+.description{
+    margin-top:30px;
+    background:#fafafa;
+    border-radius:18px;
+    padding:25px;
+}
+
+.description h3{
+    margin-bottom:15px;
+}
+
+.description p{
+    color:var(--gray);
+}
+
+/* DETAILS */
+
+.product-details{
+    margin-top:35px;
+}
+
+.product-details h3{
+    margin-bottom:18px;
+}
+
+.detail-row{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.detail-label{
+    color:var(--gray);
+}
+
+.detail-value{
+    font-weight:600;
+}
+
+/* STOCK */
+
+.stock-info{
+    margin-top:25px;
+    padding:16px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+.in-stock{
+    background:#E8F5E9;
+    color:#2E7D32;
+}
+
+.out-stock{
+    background:#FFEBEE;
+    color:#C62828;
+}
+
+/* BUTTONS */
+
+.action-buttons{
+    margin-top:35px;
+    display:flex;
+    gap:15px;
+}
+
+.btn-cart,
+.btn-buy{
+    flex:1;
+    border:none;
+    padding:18px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.35s;
+}
+
+.btn-cart{
+    background:var(--gold);
+    color:white;
+}
+
+.btn-cart:hover{
+    background:var(--gold-dark);
+    transform:translateY(-3px);
+}
+
+.btn-buy{
+    background:#111;
+    color:white;
+}
+
+.btn-buy:hover{
+    background:#222;
+    transform:translateY(-3px);
+}
+
+/* SIDEBAR */
+
+.sidebar-box{
+    position:sticky;
+    top:110px;
+    border:1px solid #eee;
+    border-radius:20px;
+    padding:30px;
+    background:white;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.sidebar-title{
+    font-size:18px;
+    font-weight:700;
+    margin-bottom:25px;
+}
+
+.sidebar-feature{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+        .top-bar{
+    background:var(--primary);
+    color:white;
+    text-align:center;
+    padding:10px;
+    background-color: red;
+    font-size:13px;
+    letter-spacing:.5px;
+}
+.sidebar-feature i{
+    width:48px;
+    height:48px;
+    background:#fafafa;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-size:18px;
+}
+
+.sidebar-feature strong{
+    display:block;
+    margin-bottom:4px;
+}
+
+.sidebar-feature p{
+    color:var(--gray);
+    font-size:13px;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    bottom:35px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#28a745;
+    color:white;
+    padding:15px 40px;
+    border-radius:50px;
+    font-weight:600;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    display:none;
+}
+
+.toast.show{
+    display:block;
+}
+
+/* MOBILE */
+
+@media(max-width:1200px){
+
+.product-grid{
+    grid-template-columns:1fr;
+}
+
+.product-gallery,
+.sidebar-box{
+    position:relative;
+    top:auto;
+}
+
+.main-image-box{
+    height:500px;
+}
+
+}
+
+@media(max-width:768px){
+
+header{
+    padding:15px 20px;
+}
+.top-bar{
+    background:var(--primary);
+    color:white;
+    text-align:center;
+    padding:10px;
+    background-color: red;
+    font-size:13px;
+
+    letter-spacing:.5px;
+}
+.nav-links{
+    display:none;
+}
+
+.product-title{
+    font-size:32px;
+}
+
+.price-new{
+    font-size:38px;
+}
+
+.action-buttons{
+    flex-direction:column;
+}
+
+.main-image-box{
+    height:350px;
+}
+
+}
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    ✨ Free Shipping Across India | Easy Returns | Secure Payments
+</div>
+    <header>
+        <div class="logo"><a href="/shop/">LUXEDIYU</a></div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/shop/">Shop</a></li>
+                <li><a href="/cart/">Cart</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="product-grid">
+            
+            <!-- Gallery -->
+            <div class="product-gallery">
+<div class="main-image-box zoom-container">                    {% if product.image %}
+                    <img src="{{ product.image.url }}" id="mainImage">
+                    {% else %}
+                    <img src="https://via.placeholder.com/500" id="mainImage">
+                    {% endif %}
+                </div>
+                <div class="thumbnail-list">
+                    {% if product.image %}
+                    <div class="thumb-item active" onclick="changeImage(this, '{{ product.image.url }}')">
+                        <img src="{{ product.image.url }}">
+                    </div>
+                    {% endif %}
+                    {% if product.image1 %}
+                    <div class="thumb-item" onclick="changeImage(this, '{{ product.image1.url }}')">
+                        <img src="{{ product.image1.url }}">
+                    </div>
+                    {% endif %}
+                    {% if product.image2 %}
+                    <div class="thumb-item" onclick="changeImage(this, '{{ product.image2.url }}')">
+                        <img src="{{ product.image2.url }}">
+                    </div>
+                    {% endif %}
+                    {% if product.image3 %}
+                    <div class="thumb-item" onclick="changeImage(this, '{{ product.image3.url }}')">
+                        <img src="{{ product.image3.url }}">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title">{{ product.name }}</h1>
+                <span class="product-brand">{{ product.brand|default:"LUXEDIYU" }}</span>
+                
+                <div class="rating-row">
+                    <div class="rating-stars">★★★★☆</div>
+                    <span class="rating-count">{{ product.review_count|default:0 }} ratings</span>
+                </div>
+
+                <div class="price-section">
+                    <span class="price-new">₹{{ product.price|floatformat:0 }}</span>
+                    {% if product.old_price %}
+                    <span class="price-old">₹{{ product.old_price|floatformat:0 }}</span>
+                    {% endif %}
+                </div>
+                {% if product.stock > 0 %}
+                <div class="action-buttons">
+                    <button class="btn-cart" id="addToCartBtn">Add to Cart</button>
+                    <button class="btn-buy" id="buyNowBtn">Buy Now</button>
+                </div>
+                {% endif %}
+                <!-- Description from Backend -->
+                {% if product.description %}
+                <div class="description">
+                    <h3>Description</h3>
+                    <p>{{ product.description|linebreaks }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Product Details -->
+                <div class="product-details">
+                    <h3>Product Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Category</span>
+                        <span class="detail-value">{{ product.category.name }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Color</span>
+                        <span class="detail-value">{{ product.color }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Size</span>
+                        <span class="detail-value">{{ product.size }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Brand</span>
+                        <span class="detail-value">{{ product.brand|default:"LUXEDIYU" }}</span>
+                    </div>
+                </div>
+
+                <!-- Stock Status -->
+                <div class="stock-info {% if product.stock > 0 %}in-stock{% else %}out-stock{% endif %}">
+                    {% if product.stock > 0 %}
+                    ✓ In Stock ({{ product.stock }} available)
+                    {% else %}
+                    ✗ Out of Stock
+                    {% endif %}
+                </div>
+
+                
+            </div>
+
+            <!-- Sidebar -->
+            <div class="product-sidebar">
+                <div class="sidebar-box">
+                    <div class="sidebar-title">Why Shop With Us?</div>
+                    
+                    <div class="sidebar-feature">
+                        <i class="fas fa-shipping-fast"></i>
+                        <div>
+                            <strong>Free Shipping</strong>
+                            <p>On Every orders</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-feature">
+                        <i class="fas fa-undo"></i>
+                        <div>
+                            <strong>Easy Returns</strong>
+                            <p>10 day return policy</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <strong>Quality Assured</strong>
+                            <p>Premium materials</p>
+                        </div>
+                    </div>
+                    
+                    <div class="sidebar-feature">
+                        <i class="fas fa-headset"></i>
+                        <div>
+                            <strong>24/7 Support</strong>
+                            <p>We are here to help</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        var productId = {{ product.id }};
+        var productName = "{{ product.name|escapejs }}";
+        var productPrice = {{ product.price }};
+        var productImage = "{% if product.image %}{{ product.image.url }}{% else %}https://via.placeholder.com/300{% endif %}";
+        
+        function changeImage(element, imageUrl) {
+            document.getElementById('mainImage').src = imageUrl;
+            document.querySelectorAll('.thumb-item').forEach(function(thumb) {
+                thumb.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+        
+        function showToast(msg) {
+            var toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(function() {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        function addToCart() {
+            var cartItem = {
+                id: productId,
+                name: productName,
+                color: '{{ product.color|escapejs }}',
+                size: '{{ product.size|escapejs }}',
+                price: productPrice,
+                quantity: 1,
+                image: productImage
+            };
+            
+            var cart = JSON.parse(localStorage.getItem('lumiere_cart')) || [];
+            cart.push(cartItem);
+            localStorage.setItem('lumiere_cart', JSON.stringify(cart));
+            
+            showToast('✓ Added to Cart!');
+            
+            setTimeout(function() {
+                window.location.href = '/cart/';
+            }, 1000);
+        }
+        
+        document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+        document.getElementById('buyNowBtn').addEventListener('click', addToCart);
+    </script>
+
+    <div class="toast" id="toast"></div>
+
+</body>
+</html>

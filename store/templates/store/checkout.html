@@ -1,0 +1,401 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - LUXEDIYU</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'DM Sans', sans-serif; background: #f5f5f5; margin: 0; }
+        
+        /* Header */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 50px; background: #fff; border-bottom: 1px solid #eee; }
+        .logo { font-size: 1.5rem; font-family: 'Playfair Display', serif; font-weight: 700; }
+        
+        /* Checkout Container */
+        .checkout-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        
+        .checkout-section { background: #fff; padding: 25px; margin-bottom: 20px; border-radius: 8px; }
+        .section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-number { background: #d4af37; color: #fff; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+        
+        /* Form Styles */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; color: #333; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem; transition: 0.3s; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: #d4af37; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+        
+        /* Enhanced Payment Section */
+        .payment-section { margin-top: 20px; }
+        .payment-section-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        
+        .payment-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .payment-option:hover { border-color: #d4af37; background: #fafafa; }
+        
+        .payment-option.selected { border-color: #d4af37; background: #fdf8f0; }
+        
+        .payment-option input[type="radio"] { display: none; }
+        
+        .payment-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .payment-option.selected .payment-radio::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #d4af37;
+            border-radius: 50%;
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #d4af37;
+        }
+        
+        .payment-details { flex: 1; }
+        .payment-title { font-weight: 700; font-size: 1rem; margin-bottom: 5px; }
+        .payment-desc { font-size: 0.85rem; color: #666; }
+        
+        .payment-features {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .payment-feature {
+            font-size: 0.8rem;
+            color: #007600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .payment-feature i { font-size: 0.7rem; }
+        
+        /* COD Specific Styles */
+        .cod-info {
+            background: #fdf8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #666;
+            display: none;
+        }
+        
+        .payment-option.selected .cod-info { display: block; }
+        
+        /* Order Summary Box */
+        .order-box { background: #fff; padding: 25px; border-radius: 8px; position: sticky; top: 20px; border: 1px solid #eee; }
+        
+        .order-item { display: flex; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .order-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; }
+        .order-item-details h4 { font-size: 0.95rem; margin-bottom: 5px; }
+        .order-item-details p { font-size: 0.85rem; color: #666; }
+        
+        .price-details { margin-top: 15px; }
+        .price-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .price-row-label { color: #555; }
+        .price-row-value { font-weight: 700; }
+        .price-row-value.free { color: #007600; }
+        
+        .price-row.final { border-top: 1px solid #eee; padding-top: 15px; margin-top: 15px; font-weight: 700; font-size: 1.2rem; color: #d4af37; }
+        
+        .place-order-btn {
+            width: 100%;
+            background: #d4af37;
+            color: #fff;
+            border: none;
+            padding: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin-top: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        
+        .place-order-btn:hover { background: #c9a227; transform: translateY(-2px); }
+        .top-bar{
+    background:var(--primary);
+    color:white;
+    text-align:center;
+    background-color: red;
+    padding:10px;
+    font-size:13px;
+    letter-spacing:.5px;
+}
+        .secure-note { text-align: center; font-size: 0.8rem; color: #999; margin-top: 15px; }
+        .secure-note i { margin-right: 5px; }
+        
+        .empty-cart-message { text-align: center; padding: 40px; }
+        .empty-cart-message a { display: inline-block; background: #d4af37; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 6px; margin-top: 15px; }
+        
+        @media (max-width: 900px) { 
+            .checkout-container { grid-template-columns: 1fr; } 
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<div class="top-bar">
+    ✨ Free Shipping Across India | Easy Returns | Secure Payments
+</div>
+    <header>
+        <div class="logo"><a href="{% url 'shop' %}" style="text-decoration:none; color:inherit;">LUXEDIYU</a></div>
+        <div style="color: #d4af37;"><i class="fas fa-lock"></i> Secure Checkout</div>
+    </header>
+
+    <div class="checkout-container">
+        
+        <!-- Left: Form Details -->
+        <div class="checkout-left">
+            
+            <!-- Shipping Address -->
+            <div class="checkout-section">
+                <div class="section-title">
+                    <span class="section-number">1</span> Shipping Address
+                </div>
+                
+                <form id="shippingForm" method="POST" action="{% url 'checkout' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name *</label>
+                            <input type="text" name="first_name" required placeholder="Enter first name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name *</label>
+                            <input type="text" name="last_name" required placeholder="Enter last name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address *</label>
+                        <input type="text" name="address" required placeholder="Flat No., Building Name, Street Name">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City *</label>
+                            <input type="text" name="city" required placeholder="City">
+                        </div>
+                        <div class="form-group">
+                            <label>State *</label>
+                            <select name="state" required>
+                                <option value="">Select State</option>
+                                <!-- States -->
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <!-- Union Territories -->
+                                <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                                <option value="Chandigarh">Chandigarh</option>
+                                <option value="Dadra and Nagar Haveli and Daman and Diu">
+                                    Dadra and Nagar Haveli and Daman and Diu
+                                </option>
+                                <option value="Delhi">Delhi (NCT)</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                                <option value="Lakshadweep">Lakshadweep</option>
+                                <option value="Puducherry">Puducherry</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pincode *</label>
+                            <input type="text" name="pincode" required placeholder="6-digit pincode" maxlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone *</label>
+                            <input type="tel" name="phone" required placeholder="10-digit mobile number" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email *</label>
+                        <input type="email" name="email" required placeholder="your@email.com">
+                    </div>
+            </div>
+
+            <!-- Enhanced Payment Section -->
+            <div class="checkout-section">
+                <div class="payment-section-title">
+                    <span class="section-number">2</span> Payment Method
+                </div>
+                
+                <!-- Online Payment Option -->
+                <div class="payment-option selected" onclick="selectPayment('online')">
+                    <input type="radio" name="payment" value="card" checked>
+                    <div class="payment-radio"></div>
+                    <div class="payment-icon"><i class="fas fa-credit-card"></i></div>
+                    <div class="payment-details">
+                        <div class="payment-title">Online Payment</div>
+                        <div class="payment-desc">Pay via Credit Card, Debit Card, UPI, Net Banking</div>
+                        <div class="payment-features">
+                            <span class="payment-feature"><i class="fas fa-check"></i> Secure</span>
+                            <span class="payment-feature"><i class="fas fa-lock"></i> Encrypted</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- COD Option -->
+                <div class="payment-option" onclick="selectPayment('cod')">
+                    <input type="radio" name="payment" value="cod">
+                    <div class="payment-radio"></div>
+                    <div class="payment-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="payment-details">
+                        <div class="payment-title">Cash on Delivery</div>
+                        <div class="payment-desc">Pay when you receive your order</div>
+                    </div>
+                </div>
+                
+                <!-- Popular Cards Info -->
+                <div style="margin-top: 20px; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 10px;">We accept:</p>
+                    <div style="display: flex; gap: 10px; font-size: 1.5rem; color: #666;">
+                        <i class="fab fa-cc-visa"></i>
+                        <i class="fab fa-cc-mastercard"></i>
+                        <i class="fab fa-cc-amex"></i>
+                        <i class="fas fa-university"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Order Summary -->
+        <div class="order-box">
+            <div class="section-title">Order Summary</div>
+            
+            <!-- Check if cart is empty -->
+            {% if not cart %}
+            <div class="empty-cart-message">
+                <p>Your cart is empty!</p>
+                <a href="{% url 'shop' %}">Continue Shopping</a>
+            </div>
+            {% else %}
+            
+            <!-- Order Items -->
+            {% for item in cart %}
+            <div class="order-item">
+                {% if item.image %}
+                <img src="{{ item.image }}" alt="{{ item.name }}">
+                {% else %}
+                <img src="https://via.placeholder.com/80" alt="{{ item.name }}">
+                {% endif %}
+                <div class="order-item-details">
+                    <h4>{{ item.name }}</h4>
+                    <p>Qty: {{ item.quantity }}</p>
+                    <p>Color: {{ item.color|default:"Default" }}, Size: {{ item.size|default:"Default" }}</p>
+                    <p style="font-weight: 700; color: #d4af37;">₹{{ item.price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div class="price-details">
+                <div class="price-row">
+                    <span class="price-row-label">Subtotal</span>
+                    <span class="price-row-value">₹{{ total_price|floatformat:0 }}</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-row-label">Shipping</span>
+                    <span class="price-row-value free">FREE</span>
+                </div>
+                <div class="price-row">
+                    <span class="price-row-label">Discount</span>
+                    <span class="price-row-value free">-₹0</span>
+                </div>
+                <div class="price-row final">
+                    <span class="price-row-label">Total</span>
+                    <span class="price-row-value">₹{{ total_price|floatformat:0 }}</span>
+                </div>
+            </div>
+
+            <button type="submit" class="place-order-btn">Place Order</button>
+            {% endif %}
+            
+            </form>
+            
+            <div class="secure-note">
+                <i class="fas fa-shield-alt"></i> 100% Secure Payments via Razorpay
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectPayment(type) {
+            // Remove selected class from all options
+            document.querySelectorAll('.payment-option').forEach(function(option) {
+                option.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            event.currentTarget.classList.add('selected');
+            
+            // Set radio value
+            document.querySelector('input[name="payment"][value="' + type + '"]').checked = true;
+        }
+        
+        function placeOrderSuccess() {
+            localStorage.removeItem('lumiere_cart');
+            localStorage.removeItem('lumiere_order');
+            window.location.href = '/order-confirmation/';
+        }
+    </script>
+
+</body>
+</html>
